@@ -12,14 +12,14 @@ tsd install
 ```
 Then you may run the unit tests (Karma and Protractor).
 ```bash
-karma start
+node_modules/.bin/karma start
 ```
-To run the Protractor
+To run the Protractor tests, first setup Selenium.
 ```bash
 node_modules/.bin/webdriver-manager update --standalone
 node_modules/.bin/webdriver-manager start
 ```
-Then, in a separate console,
+Then, in a separate console start Protractor.
 ```bash
 node_modules/.bin/protractor
 ```
