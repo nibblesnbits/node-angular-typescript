@@ -19,16 +19,18 @@ module.exports = function(config) {
             "public/bower/jquery/dist/jquery.js",
             "public/bower/angular/angular.js",
             "public/bower/angular-ui-router/release/angular-ui-router.js",
+            // angular-mocks
             'public/bower/angular-mocks/angular-mocks.js',
             // mock stuff
             'test/unit/mocks.js',
+            'node_modules/chance/dist/chance.min.js',
             // helpers
             'test/unit/phantomHelpers.js',
-            'node_modules/chance/dist/chance.min.js',
             // app
-            "public/app/app.js",
+            "public/app/data/dataService.js",
             "public/app/layout/shellController.js",
             "public/app/home/homeController.js",
+            "public/app/app.js",
             // tests
             "test/unit/**/*.test.js"
         ],
@@ -70,11 +72,11 @@ module.exports = function(config) {
 
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-        browsers: ['Chrome'],
+        browsers: ['PhantomJS'],
 
 
         // Continuous Integration mode
         // if true, Karma captures browsers, runs the tests and exits
-        singleRun: false
+        singleRun: true
     });
 }
