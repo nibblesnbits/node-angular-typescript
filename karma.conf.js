@@ -27,11 +27,18 @@ module.exports = function(config) {
             // helpers
             'test/unit/phantomHelpers.js',
             // app
+            "public/app/declarations.js",
+            
+            "public/app/common/common.js",
+            "public/app/common/directives.js",
+            "public/app/common/providers.js",
+            
             "public/app/data/dataService.js",
+            
             "public/app/layout/shellController.js",
             "public/app/home/homeController.js",
+            
             "public/app/app.js",
-            "public/app/directives/directives.js",
             // tests
             "test/unit/**/*.test.js"
         ],
