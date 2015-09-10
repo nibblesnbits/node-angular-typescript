@@ -18,6 +18,10 @@ To run the Protractor tests, first setup [Selenium](http://www.seleniumhq.org/).
 node_modules/.bin/webdriver-manager update --standalone
 node_modules/.bin/webdriver-manager start
 ```
+Then, in a separate console, start the Node server.
+```bash
+node app
+```
 Then, in a separate console, start Protractor.
 ```bash
 node_modules/.bin/protractor
