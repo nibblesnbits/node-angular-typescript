@@ -24,3 +24,4 @@ node_modules
 public/bower
 typings
 public/app/**/*.js*
+.vscode
