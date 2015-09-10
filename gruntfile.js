@@ -10,7 +10,7 @@ module.exports = function(grunt) {
       }
     },
     watch: {
-      files: ["**/*.ts", "!node_modules/**/*.ts"],
+        src: ["**/*.ts", "!node_modules/**/*.ts"],
       tasks: ['ts']
     }
   });
