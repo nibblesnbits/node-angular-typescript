@@ -26,14 +26,6 @@ module.exports = function (grunt) {
         }
       },
     },
-    protractor_webdriver: {
-      default: {
-        options: {
-          path: 'node_modules/.bin',
-          command: 'webdriver-manager start',
-        },
-      },
-    },
     karma: {
       default: {
         configFile: 'karma.conf.js',
@@ -46,7 +38,6 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-ts');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-protractor-runner');
-  grunt.loadNpmTasks('grunt-protractor-webdriver');
   grunt.loadNpmTasks('grunt-karma');
 
   grunt.registerTask('default', ['watch']);
