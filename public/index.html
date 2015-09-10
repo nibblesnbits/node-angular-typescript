@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Node-Angular-Typscript</title>
+    <style>
+        .ng-hide {
+            display: none !important;
+        }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+
+    <link href="bower/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="bower/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="bower/angular/angular-csp.css" rel="stylesheet" />
+</head>
+<body ng-app="app">
+    <div>
+        <div ui-view></div>
+    </div>
+    
+	<script src="bower/jquery/dist/jquery.min.js"></script>
+	<script src="bower/angular/angular.js"></script>
+	<script src="bower/angular-ui-router/release/angular-ui-router.js"></script>
+	
+	<script src="app/data/dataService.js"></script>
+    
+	<script src="app/layout/shellController.js"></script>
+	<script src="app/home/homeController.js"></script>
+    
+	<script src="app/app.js"></script>
+</body>
+</html>

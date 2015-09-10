@@ -1,0 +1,54 @@
+{
+  "version": "v4",
+  "repo": "borisyankov/DefinitelyTyped",
+  "ref": "master",
+  "path": "typings",
+  "bundle": "typings/tsd.d.ts",
+  "installed": {
+    "angularjs/angular.d.ts": {
+      "commit": "76ed26e95e91f1c91f2d11819c44b55b617e859a"
+    },
+    "jquery/jquery.d.ts": {
+      "commit": "76ed26e95e91f1c91f2d11819c44b55b617e859a"
+    },
+    "serve-static/serve-static.d.ts": {
+      "commit": "76ed26e95e91f1c91f2d11819c44b55b617e859a"
+    },
+    "mime/mime.d.ts": {
+      "commit": "76ed26e95e91f1c91f2d11819c44b55b617e859a"
+    },
+    "log4js/log4js.d.ts": {
+      "commit": "76ed26e95e91f1c91f2d11819c44b55b617e859a"
+    },
+    "express/express.d.ts": {
+      "commit": "76ed26e95e91f1c91f2d11819c44b55b617e859a"
+    },
+    "karma/karma.d.ts": {
+      "commit": "76ed26e95e91f1c91f2d11819c44b55b617e859a"
+    },
+    "bluebird/bluebird.d.ts": {
+      "commit": "76ed26e95e91f1c91f2d11819c44b55b617e859a"
+    },
+    "node/node.d.ts": {
+      "commit": "76ed26e95e91f1c91f2d11819c44b55b617e859a"
+    },
+    "gruntjs/gruntjs.d.ts": {
+      "commit": "76ed26e95e91f1c91f2d11819c44b55b617e859a"
+    },
+    "angular-protractor/angular-protractor.d.ts": {
+      "commit": "76ed26e95e91f1c91f2d11819c44b55b617e859a"
+    },
+    "selenium-webdriver/selenium-webdriver.d.ts": {
+      "commit": "76ed26e95e91f1c91f2d11819c44b55b617e859a"
+    },
+    "angular-ui-router/angular-ui-router.d.ts": {
+      "commit": "76ed26e95e91f1c91f2d11819c44b55b617e859a"
+    },
+    "chance/chance.d.ts": {
+      "commit": "76ed26e95e91f1c91f2d11819c44b55b617e859a"
+    },
+    "jasmine/jasmine.d.ts": {
+      "commit": "76ed26e95e91f1c91f2d11819c44b55b617e859a"
+    }
+  }
+}
