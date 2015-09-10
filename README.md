@@ -10,6 +10,9 @@ Then you may run the unit tests ([Karma](http://karma-runner.github.io/0.13/inde
 ```bash
 node_modules/.bin/karma start
 ```
+
+>NOTE: By the default configuration in this project, Karma requires [PhantomJS](http://phantomjs.org/) to be installed and in your `PATH`.
+
 To run the Protractor tests, first setup [Selenium](http://www.seleniumhq.org/).
 ```bash
 node_modules/.bin/webdriver-manager update --standalone
