@@ -8,15 +8,15 @@ module myApp {
 		constructor(private $http: angular.IHttpService) { }
 		
 		public link: angular.IDirectiveLinkFn = (scope: angular.IScope, element: angular.IAugmentedJQuery, attrs: angular.IAttributes) => {
-		element.addClass('someClass');
+			element.addClass('someClass');
 		}
 		
 		static factory() {
-		var directive = ($http) => {
-			return new myDirective($http);
-		};
-		directive.$inject = ['$http'];
-		return directive;
+			var directive = ($http) => {
+				return new myDirective($http);
+			};
+			directive.$inject = ['$http'];
+			return directive;
 		}
 	}
 	angular.module(commonModuleId).directive('myDirective', myDirective.factory());
