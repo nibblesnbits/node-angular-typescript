@@ -2,9 +2,6 @@
 
 
 module myApp {
-	export const dataModuleId = 'dataModule';
-    export const dataServiceId = 'dataService';
-
     export interface IDataService {
         getData(): ng.IPromise<any[]>
     }

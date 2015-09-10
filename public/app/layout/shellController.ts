@@ -1,9 +1,6 @@
 /// <reference path="../../../typings/tsd.d.ts" />
 
 module myApp {
-    export const shellModuleId = 'app.shell';
-    
-    
     angular.module(shellModuleId, [
         'ui.router'
     ])
@@ -25,8 +22,6 @@ module myApp {
         
         public static $inject = [];
         
-        constructor() {
-            
-        }
+        constructor() { }
     }
 }

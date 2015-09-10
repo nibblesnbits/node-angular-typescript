@@ -19,5 +19,5 @@ module myApp {
 		return directive;
 		}
 	}
-	angular.module(appModuleId).directive('myDirective', myDirective.factory());
+	angular.module(commonModuleId).directive('myDirective', myDirective.factory());
 }

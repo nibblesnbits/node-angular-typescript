@@ -1,10 +1,6 @@
 /// <reference path="../../../typings/tsd.d.ts" />
 
 module myApp {
-    export const homeModuleId = 'app.home';
-    export const homeControllerId = 'homeController';
-    export const homeStateName = 'app.home';
-
     angular.module(homeModuleId, [
         'ui.router'
     ]).config(Config);
@@ -22,11 +18,15 @@ module myApp {
 
     export class HomeController {
         
-        public static $inject = [dataServiceId];
+        public static $inject = [dataServiceId, greetingProviderId];
         
         public data: any[];
+        public message: string;
         
-        constructor(private dataService: myApp.IDataService) {
+        constructor(private dataService: myApp.IDataService, greetingProvider: IGreetingProvider) {
+            
+            this.message = greetingProvider.getGreeting();
+            
             this.activate();
         }
 

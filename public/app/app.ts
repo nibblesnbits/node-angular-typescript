@@ -2,24 +2,23 @@
 
 
 module myApp {
-    export const appModuleId = 'app';
-
     'use strict';
 
     angular.module(appModuleId, [
         shellModuleId,
         homeModuleId,
         dataModuleId,
+        commonModuleId,
         'ui.router'
     ])
     .config(Config)
     .run(Run);
 
-    function Config($urlRouterProvider: ng.ui.IUrlRouterProvider, $stateProvider: angular.ui.IStateProvider, $sceProvider: angular.ISCEProvider) {
+    function Config($urlRouterProvider: ng.ui.IUrlRouterProvider) {
         $urlRouterProvider.otherwise('/home');
-        $sceProvider.enabled(false);
+        // greetingProvider.setGreeting("sup?");
     }
-    Config.$inject = ['$urlRouterProvider', '$stateProvider', '$sceProvider'];
+    Config.$inject = ['$urlRouterProvider'];
 
     function Run($rootScope: angular.IRootScopeService, $state: angular.ui.IStateService, $stateParams: angular.ui.IStateParamsService) {
         $rootScope["$state"] = $state;
