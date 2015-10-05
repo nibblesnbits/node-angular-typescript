@@ -13,7 +13,8 @@ module myApp {
         homeModuleId,
         dataModuleId,
         commonModuleId,
-        'ui.router'
+        'ui.router',
+        'ngCookies'
     ])
     .config(Config)
     .run(Run);

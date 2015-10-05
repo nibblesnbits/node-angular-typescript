@@ -6,39 +6,40 @@ module myApp {
     
     interface IStorageContainer {
 		set(key: string, data: any): void;
-        get<T>(key: string): T;     
+        get(key: string): string;     
     }
     
     class LocalStorageContainer implements IStorageContainer {
         public set(key: string, data: any): void {
             localStorage.setItem(key,data);
         }
-        public get<T>(key: string) : T {
+        public get(key: string) : string {
             return localStorage.getItem(key);
         }
     }
     
     class CookieStorageContainer implements IStorageContainer {
         
-        constructor(private $cookies){
+        public $inject = []
+        
+        constructor(private $cookies: angular.cookies.ICookiesService){
             
         }
         
         public set(key: string, data: any): void {
-//             var split = location.hostname.split('.').splice(-2);
-// 
-//             if (split.length > 1) {
-//                 $cookies.put(key, data, {
-//                     expires: moment().add(100, 'days').format('ddd, MMM YYYY hh:mm:ss'),
-//                     domain: location.hostname.split('.').splice(-2).join('.')
-//                 });
-//             } else {
-                // $cookies.put(key, data);
-            // }
+            var split = location.hostname.split('.').splice(-2);
+
+            if (split.length > 1) {
+                this.$cookies.put(key, data, {
+                    expires: moment().add(100, 'days').format('ddd, MMM YYYY hh:mm:ss'),
+                    domain: location.hostname.split('.').splice(-2).join('.')
+                });
+            } else {
+                this.$cookies.put(key, data);
+            }
         }
-        public get<T>(key: string) : T {
-            // return $cookies.get(key);
-            throw new Error("not implemented");
+        public get(key: string) : string {
+            return this.$cookies.get(key);
         }
     }
     
@@ -61,8 +62,8 @@ module myApp {
         public setItem(key: string, data: any): void {
             this.store.set(key,data);
         }
-        public getItem<T>(key: string) : T {
-            return this.store.get<T>(key);
+        public getItem<T>(key: string) : string {
+            return this.store.get(key);
         }
         
 		static factory(): StorageServiceFactory {
@@ -81,14 +82,14 @@ module myApp {
     }
 
     export class AppConfigService implements IAppConfigService {
-        public static $inject = [storageServiceFactoryId];
+        public static $inject = [storageServiceFactoryId, '$cookies'];
         
         private apiUrlKey = 'gl_apiUrl';
 
         private storage: IStorageService;
 
-        constructor(factory: StorageServiceFactory) {
-			this.storage = factory(new LocalStorageContainer());
+        constructor(factory: StorageServiceFactory, $cookies) {
+			this.storage = factory(new CookieStorageContainer($cookies));
         }
         
         public set DataApiUrl(url: string) {

@@ -49,6 +49,18 @@
     },
     "jasmine/jasmine.d.ts": {
       "commit": "76ed26e95e91f1c91f2d11819c44b55b617e859a"
+    },
+    "moment/moment.d.ts": {
+      "commit": "30daf61172ff7160cb191fbdca095f5b8e3f752b"
+    },
+    "moment/moment-node.d.ts": {
+      "commit": "30daf61172ff7160cb191fbdca095f5b8e3f752b"
+    },
+    "angularjs/angular-cookies.d.ts": {
+      "commit": "30daf61172ff7160cb191fbdca095f5b8e3f752b"
+    },
+    "angularjs/angular-mocks.d.ts": {
+      "commit": "30daf61172ff7160cb191fbdca095f5b8e3f752b"
     }
   }
 }
