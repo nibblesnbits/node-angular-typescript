@@ -1,6 +1,5 @@
 /// <reference path="../../../typings/tsd.d.ts" />
 /// <reference path="../declarations.ts" />
-/// <reference path="../data/dataService.ts" />
 
 module myApp {
     
@@ -20,9 +19,11 @@ module myApp {
     
     class CookieStorageContainer implements IStorageContainer {
         
-        public $inject = []
+        private cookieDateFormat = 'ddd, MMM YYYY hh:mm:ss';
+        private expirationSpan = 10;
         
-        constructor(private $cookies: angular.cookies.ICookiesService){
+        constructor(
+            private $cookies: angular.cookies.ICookiesService) {
             
         }
         
@@ -31,8 +32,8 @@ module myApp {
 
             if (split.length > 1) {
                 this.$cookies.put(key, data, {
-                    expires: moment().add(100, 'days').format('ddd, MMM YYYY hh:mm:ss'),
-                    domain: location.hostname.split('.').splice(-2).join('.')
+                    expires: moment().add(this.expirationSpan, 'days').format('ddd, MMM YYYY hh:mm:ss'),
+                    domain: split.join('.')
                 });
             } else {
                 this.$cookies.put(key, data);
@@ -45,7 +46,7 @@ module myApp {
     
     export interface IStorageService {
 		setItem(key: string, data: any): void;
-        getItem<T>(key: string): T;        
+        getItem(key: string): string;        
     }
     
     interface StorageServiceFactory {
@@ -62,7 +63,7 @@ module myApp {
         public setItem(key: string, data: any): void {
             this.store.set(key,data);
         }
-        public getItem<T>(key: string) : string {
+        public getItem(key: string) : string {
             return this.store.get(key);
         }
         
@@ -84,7 +85,8 @@ module myApp {
     export class AppConfigService implements IAppConfigService {
         public static $inject = [storageServiceFactoryId, '$cookies'];
         
-        private apiUrlKey = 'gl_apiUrl';
+        private apiUrlKey = 'config_apiUrl';
+        private cookieExpirationKey = 'config_cookieExpiration';
 
         private storage: IStorageService;
 
@@ -96,7 +98,7 @@ module myApp {
             this.storage.setItem(this.apiUrlKey,url);
         }
         public get DataApiUrl() : string {
-            return this.storage.getItem<string>(this.apiUrlKey);
+            return this.storage.getItem(this.apiUrlKey);
         }
     }
     
