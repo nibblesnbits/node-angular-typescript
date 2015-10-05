@@ -9,13 +9,13 @@ var tests;
         Mocks.prototype.generateRandomObjects = function (count) {
             if (!count)
                 count = 3;
-            var commands = new Array();
+            var objs = new Array();
             for (var i = 0; i < count; i++) {
-                commands.push({
+                objs.push({
                     guid: this.chance.string({ length: 32, pool: this.letterPool })
                 });
             }
-            return commands;
+            return objs;
         };
         Mocks.prototype.generateRandomStrings = function (count) {
             return Array.apply(null, Array(count)).map(function () { return this.chance.string(); });

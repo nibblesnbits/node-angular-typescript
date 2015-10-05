@@ -1,4 +1,7 @@
 /// <reference path="../../../typings/tsd.d.ts" />
+/// <reference path="../declarations.ts" />
+/// <reference path="../data/dataservice.ts" />
+/// <reference path="../common/services.ts" />
 
 module myApp {
     angular.module(homeModuleId, [
@@ -18,14 +21,12 @@ module myApp {
 
     export class HomeController {
         
-        public static $inject = [dataServiceId, greetingProviderId];
+        public static $inject = [dataServiceId];
         
         public data: any[];
-        public message: string;
         
-        constructor(private dataService: myApp.IDataService, greetingProvider: IGreetingProvider) {
-            
-            this.message = greetingProvider.getGreeting();
+        constructor(
+            private dataService: myApp.IDataService) {
             
             this.activate();
         }
@@ -38,5 +39,4 @@ module myApp {
     }
 
     angular.module(homeModuleId).controller(homeControllerId, HomeController);
-    
 }

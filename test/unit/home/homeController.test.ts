@@ -1,4 +1,8 @@
 /// <reference path="../../../typings/tsd.d.ts" />
+/// <reference path="../../../public/app/common/directives.ts" />
+/// <reference path="../../../public/app/data/dataservice.ts" />
+/// <reference path="../../../public/app/home/homeController.ts" />
+/// <reference path="../mocks.ts" />
 
 module tests {
     describe('HomeController', function () {
@@ -34,7 +38,7 @@ module tests {
             
             it('calls getData', () => {
                 
-                expect(dataService.getData).toHaveBeenCalledWith();
+                expect(dataService.getData).toHaveBeenCalled();
             });
         });
     });

@@ -31,7 +31,7 @@ module.exports = function(config) {
             
             "public/app/common/common.js",
             "public/app/common/directives.js",
-            "public/app/common/providers.js",
+            "public/app/common/services.js",
             
             "public/app/data/dataService.js",
             
@@ -39,6 +39,10 @@ module.exports = function(config) {
             "public/app/home/homeController.js",
             
             "public/app/app.js",
+            
+            // templates
+            "public/app/**/*.html",
+            
             // tests
             "test/unit/**/*.test.js"
         ],
@@ -47,13 +51,45 @@ module.exports = function(config) {
         // list of files to exclude
         exclude: [
         ],
-
+        
+        plugins: [
+            'karma-phantomjs-launcher',
+            'karma-chrome-launcher',
+            'karma-jasmine',
+            'karma-ng-html2js-preprocessor'
+        ],
 
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
+            'public/app/**/*.html': ['ng-html2js']
         },
 
+        ngHtml2JsPreprocessor: {
+            // strip this from the file path
+            stripPrefix: 'public/',
+            // stripSuffix: '.ext',
+            // prepend this to the
+            // prependPrefix: 'tmpl/',
+        
+            // or define a custom transform function
+            // - cacheId returned is used to load template
+            //   module(cacheId) will return template at filepath
+            // cacheIdFromPath: function(filepath) {
+            //     // example strips 'public/' from anywhere in the path
+            //     // module(app/templates/template.html) => app/public/templates/template.html
+            //     var cacheId = filepath.strip('public/', '');
+            //     return cacheId;
+            // },
+
+            // - setting this option will create only a single module that contains templates
+            //   from all the files, so you can load them all with module('foo')
+            // - you may provide a function(htmlPath, originalPath) instead of a string
+            //   if you'd like to generate modules dynamically
+            //   htmlPath is a originalPath stripped and/or prepended
+            //   with all provided suffixes and prefixes
+            moduleName: 'templates'
+        },
 
         // test results reporter to use
         // possible values: 'dots', 'progress'

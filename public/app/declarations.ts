@@ -12,5 +12,8 @@ module myApp {
     export const homeStateName = 'app.home';
     
     export const greetingProviderId = 'greetingProvider'
+	
+	export const storageServiceFactoryId = 'storageServiceFactory';
+	export const appConfigServiceId = 'appConfigProvider';
 
 }
