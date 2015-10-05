@@ -4,7 +4,7 @@
 
 module myApp {
     export interface IDataService {
-        getData(): ng.IPromise<any[]>
+        getData(): angular.IPromise<any[]>
     }
 
     export class DataService implements IDataService {
@@ -13,18 +13,17 @@ module myApp {
         private baseUrl: string;
 
         constructor(
-            private $http: ng.IHttpService, 
+            private $http: angular.IHttpService, 
             private appConfig: IAppConfigService) {
 			
             this.baseUrl = appConfig.DataApiUrl;
         }
 
-        public getData(): angular.IPromise<any> {
-            return this.$http.get(this.baseUrl + "/data").then((resp: ng.IHttpPromiseCallbackArg<any[]>) => {
+        public getData(): angular.IPromise<any[]> {
+            return this.$http.get(this.baseUrl + "/data").then((resp: angular.IHttpPromiseCallbackArg<any[]>) => {
                 return resp.data;
             });
         }
-
     }
 
     angular.module(dataModuleId, []).service(dataServiceId, DataService);
