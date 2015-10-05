@@ -24,5 +24,5 @@ bin/www
 ```
 Then, in a third console, start Protractor.
 ```bash
-node_modules/.bin/protractor
+node_modules/.bin/protractor protractor.conf.js
 ```
