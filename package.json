@@ -36,6 +36,6 @@
     "less": "^2.5.1",
     "phantomjs": "^1.9.18",
     "protractor": "^2.2.0",
-    "typescript": "^1.6.0-beta"
+    "typescript": "^1.6.2"
   }
 }
