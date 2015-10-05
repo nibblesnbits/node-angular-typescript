@@ -18,12 +18,14 @@ module.exports = function(config) {
             // libs
             "public/bower/jquery/dist/jquery.js",
             "public/bower/angular/angular.js",
+            "public/bower/angular-cookies/angular-cookies.js",
             "public/bower/angular-ui-router/release/angular-ui-router.js",
             // angular-mocks
             'public/bower/angular-mocks/angular-mocks.js',
             // mock stuff
             'test/unit/mocks.js',
             'node_modules/chance/dist/chance.min.js',
+            'public/bower/moment/moment.js',
             // helpers
             'test/unit/phantomHelpers.js',
             // app

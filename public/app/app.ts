@@ -31,7 +31,7 @@ module myApp {
         
         $rootScope["$state"] = $state;
         $rootScope["$stateParams"] = $stateParams;
-        $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+        $rootScope.$on('$stateChangeSuccess', function (event: angular.IAngularEvent, toState: angular.ui.IState) {
             if (angular.isDefined(toState.data)) {
                 if (angular.isDefined(toState.data.pageTitle)) {
                     $rootScope["pageTitle"] = toState.data.pageTitle + ' | Troi';
