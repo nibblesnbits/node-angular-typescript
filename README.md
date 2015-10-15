@@ -20,7 +20,7 @@ node_modules/.bin/webdriver-manager start
 ```
 Then, in a separate console, start the Node server.
 ```bash
-bin/www
+node bin/www
 ```
 Then, in a third console, start Protractor.
 ```bash
