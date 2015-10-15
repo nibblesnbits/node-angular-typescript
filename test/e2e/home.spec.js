@@ -8,12 +8,13 @@ describe('home page', function() {
 		expect(e).toBeDefined();
 	});
 	
-	it('should have a repeater for the data', function() {
-		browser.get('/');
-		
-		
-		var e = element.all(by.repeater('d in vm.data'));
-		
-		expect(e.count()).toBe(1);
+	describe('data repeater', function() {
+		it('should have an element for each data item', function() {
+			browser.get('/');
+			
+			var e = element.all(by.repeater('d in vm.data'));
+			
+			expect(e.count()).toBe(1);
+		});
 	});
 });

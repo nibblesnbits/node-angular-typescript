@@ -16,13 +16,13 @@ module myApp {
         'ui.router',
         'ngCookies'
     ])
-    .config(Config)
+    .config(ApplicationConfiguration)
     .run(Run);
 
-    function Config($urlRouterProvider: angular.ui.IUrlRouterProvider) {
+    function ApplicationConfiguration($urlRouterProvider: angular.ui.IUrlRouterProvider) {
         $urlRouterProvider.otherwise('/home');
     }
-    Config.$inject = ['$urlRouterProvider'];
+    ApplicationConfiguration.$inject = ['$urlRouterProvider'];
 
     function Run($rootScope: angular.IRootScopeService, $state: angular.ui.IStateService, $stateParams: angular.ui.IStateParamsService, appConfig: IAppConfigService) {
         

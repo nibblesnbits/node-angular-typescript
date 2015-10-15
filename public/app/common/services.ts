@@ -1,10 +1,47 @@
 /// <reference path="../../../typings/tsd.d.ts" />
 /// <reference path="../declarations.ts" />
 
+
+/*
+    --- Services and their dependencies in TypeScript ---
+    
+    This file demonstrates some interesting design strategies when creating
+    Angular.js Services.
+    
+    Using a combination of Angular.js Services and Factories, we can create
+    highly configurable services, such as the AppConfigService below.
+    
+    AppConfigService is created via 2 steps:
+    1.  Injection of a StorageServiceFactory instance, which accepts an instance
+        of an IStorageContainer.
+    2.  Injection of the dependencies required by the IStorageContainer instance.
+    
+    In order to implement a new storage mechanism, simply create a new class that 
+    implement IStorageContainer and pass that into the StorageServiceFactory. See
+    the constructor of AppConfigService for an example.
+    
+*/
+
 module myApp {
     
+    /**
+     * A key/value store for storing arbitrary data 
+     */
     interface IStorageContainer {
+        
+        /**
+         * Sets a value in the storage container at the specified key
+         *
+         * @param {string} key Key to store the item at
+         * @param {any} data Data to store
+         */
 		set(key: string, data: any): void;
+        
+        /**
+         * Gets the value at the specfied key
+         *
+         * @param {string} key Key at which the item is stored
+         */
         get(key: string): string;     
     }
     
@@ -32,7 +69,7 @@ module myApp {
 
             if (split.length > 1) {
                 this.$cookies.put(key, data, {
-                    expires: moment().add(this.expirationSpan, 'days').format('ddd, MMM YYYY hh:mm:ss'),
+                    expires: moment().add(this.expirationSpan, 'days').format(this.cookieDateFormat),
                     domain: split.join('.')
                 });
             } else {
@@ -44,8 +81,22 @@ module myApp {
         }
     }
     
+    /**
+     * A key/value store for storing arbitrary data 
+     */
     export interface IStorageService {
+        /**
+         * Sets a value in the storage container at the specified key
+         *
+         * @param {string} key Key to store the item at
+         * @param {any} data Data to store
+         */
 		setItem(key: string, data: any): void;
+        /**
+         * Gets the value at the specfied key
+         *
+         * @param {string} key Key at which the item is stored
+         */
         getItem(key: string): string;        
     }
     
@@ -78,10 +129,19 @@ module myApp {
     
     angular.module(commonModuleId).factory(storageServiceFactoryId, StorageService.factory);
     
+    /**
+     * Service for accessing application configuration via named properites
+     */
     export interface IAppConfigService {
+        /**
+         * The base URL for the common data service
+         */
         DataApiUrl: string;
     }
 
+    /**
+     * Service for accessing application configuration via named properites
+     */
     export class AppConfigService implements IAppConfigService {
         public static $inject = [storageServiceFactoryId, '$cookies'];
         
@@ -89,7 +149,7 @@ module myApp {
         private cookieExpirationKey = 'config_cookieExpiration';
 
         private storage: IStorageService;
-
+        
         constructor(factory: StorageServiceFactory, $cookies) {
 			this.storage = factory(new CookieStorageContainer($cookies));
         }
