@@ -23,9 +23,11 @@ var tests;
                 scope.$digest();
             });
             it('creates an element with isolated scope', function () {
-                var contents = sut.contents();
                 expect(sut.hasClass('ng-isolate-scope')).toBe(true);
-                expect(contents.find('p').text().indexOf('karma-ng-html2js-preprocessor')).toBeGreaterThan(-1);
+            });
+            it('<span> element contains message', function () {
+                var contents = sut.contents();
+                expect(contents.find('span').text().indexOf(scope['options'].message)).toBeGreaterThan(-1);
             });
         });
     });

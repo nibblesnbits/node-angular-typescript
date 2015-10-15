@@ -9,7 +9,7 @@ module tests {
             scope: angular.IRootScopeService,
             createDirective: () => angular.IAugmentedJQuery;
 
-        // note use just the 'common' module here
+        // note that we use only the 'common' module here
         beforeEach(angular.mock.module(myApp.commonModuleId));
         beforeEach(angular.mock.module('templates'));
 
@@ -36,11 +36,13 @@ module tests {
             });
             
             it('creates an element with isolated scope', () => {
+                expect(sut.hasClass('ng-isolate-scope')).toBe(true);
+            });
+            
+            it('<span> element contains message', () => {
                 var contents = sut.contents();
                 
-                expect(sut.hasClass('ng-isolate-scope')).toBe(true);
-                
-                expect(contents.find('p').text().indexOf('karma-ng-html2js-preprocessor')).toBeGreaterThan(-1);
+                expect(contents.find('span').text().indexOf(scope['options'].message)).toBeGreaterThan(-1);
             });
         });
     });
@@ -51,7 +53,7 @@ module tests {
             scope: angular.IRootScopeService,
             createDirective: () => angular.IAugmentedJQuery;
 
-        // note use just the 'common' module here
+        // note that we use only the 'common' module here
         beforeEach(angular.mock.module(myApp.commonModuleId));
 
         beforeEach(angular.mock.inject(($injector) => {
