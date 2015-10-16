@@ -51,7 +51,7 @@ module myApp {
 	}
 	angular.module(commonModuleId).directive(MyDirective.DirectiveName, MyDirective.factory());
 	
-	export interface MyComplexDirectiveScope extends angular.IScope {
+	export interface IMyComplexDirectiveScope extends angular.IScope {
 		options: {
 			message: string
 		}
@@ -59,7 +59,7 @@ module myApp {
 	
 	class MyComplexDirective implements angular.IDirective {
         public static get DirectiveName(): string { return 'myComplexDirective'; };
-		public restrict = 'AE';
+		public restrict = 'A';
 		public templateUrl = "app/templates/myComplexDirective.html";
 		
 		public scope = {
@@ -68,7 +68,7 @@ module myApp {
 		
 		constructor(private dataService: IDataService) { }
 		
-		public link: angular.IDirectiveLinkFn = (scope: MyComplexDirectiveScope, element: angular.IAugmentedJQuery, attrs: angular.IAttributes) => {
+		public link: angular.IDirectiveLinkFn = (scope: IMyComplexDirectiveScope, element: angular.IAugmentedJQuery, attrs: angular.IAttributes) => {
 			element.add('<p>{{options.message}}</p>');
 		}
 		
