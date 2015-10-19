@@ -1,6 +1,5 @@
 /// <reference path="../../../typings/tsd.d.ts" />
 /// <reference path="../declarations.ts" />
-/// <reference path="../common/authorization.ts" />
 /// <reference path="../common/logging.ts" />
 
 

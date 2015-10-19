@@ -2,6 +2,8 @@
 /// <reference path="declarations.ts" />
 /// <reference path="common/services.ts" />
 /// <reference path="common/logging.ts" />
+/// <reference path="config.ts" />
+
 
 module myApp {
     'use strict';
@@ -19,31 +21,7 @@ module myApp {
     .config(ApplicationConfiguration)
     .run(Run);
 
-    function ApplicationConfiguration($urlRouterProvider: angular.ui.IUrlRouterProvider, appConfig: AppConfigService ) {
-        $urlRouterProvider.otherwise('/home');
-        
-        appConfig.DataApiUrl = "/api";
-        appConfig.AuthApiUrl = "/auth";
-        appConfig.AuthClientId = "node-angular-typescript";
-    }
-    ApplicationConfiguration.$inject = ['$urlRouterProvider', appConfigProviderId];
-
-    function LoggerConfiguration(provider: NotifierService, $logProvider: angular.ILogProvider,  $provide: angular.auto.IProvideService) {
-        $logProvider.debugEnabled(true);
-        provider.setNotifiers(new ConsoleNotifier());
-    }
-    LoggerConfiguration.$inject = [notifierProviderId, '$logProvider', '$provide'];
     
-    function ExceptionHandlerConfiguration($provide: angular.auto.IProvideService) {
-        $provide.decorator('$exceptionHandler',['$delegate', loggerServiceId,  ($delegate: angular.IExceptionHandlerService, logger: ILogger) => {
-            return (exception: Error, cause) => {
-                $delegate(exception, cause);
-                logger.error(exception.message);
-            }
-        }]);
-    }
-    ExceptionHandlerConfiguration.$inject = ['$provide'];
-
     function Run($rootScope: angular.IRootScopeService, $state: angular.ui.IStateService, $stateParams: angular.ui.IStateParamsService) {
         
         $rootScope["$state"] = $state;

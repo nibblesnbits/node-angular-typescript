@@ -2,9 +2,29 @@
 /// <reference path="../declarations.ts" />
 /// <reference path="./services.ts" />
 
+
+/*
+	--- Angular.js Providers ---
+	
+	This file demonstrates a simple method for defining Angular.js
+	Providers in TypeScript.
+	
+	The general approach here is to first create a Provider, in this case
+    the INotifierService, that can be accessed during the configuration
+    phase of your angular application.  This service is then passed to the
+    ILogger and used to send notifications to the user via that INotifier's
+    notify() method.
+    
+    This approach allows us to easily configure where and how log messages
+    are displayed in one place.
+*/
+
 module myApp {
     
     export interface INotifierService {
+        /**
+         * Returns the list of registered notifiers
+         */
         getNotifiers(): INotifier[];
 	}
 	
@@ -28,20 +48,25 @@ module myApp {
 	angular.module(commonModuleId).provider(notifierServiceId, NotifierService);
     
     export interface ILogger {
-        log(msg: string): void;
+        /** Log a debug message */
         debug(msg: string): void;
+        /** Log a generic message */
+        log(msg: string): void;
+        /** Log an information message */
         info(msg: string): void;
+        /** Log a warning message */
         warn(msg: string): void;
+        /** Log an error message */
         error(msg: string): void;
     }
     
     export interface INotifier {
+        /** Send a notification message */
         notify(msg: string, type?: string): void;
     }
     
-
     export class LoggerService implements ILogger {
-        public static $inject = [notifierServiceId];
+        public static $inject = [notifierServiceId, '$log'];
         
         private notifiers: INotifier[];
 
@@ -53,7 +78,6 @@ module myApp {
         }
         
         public log(msg: string) :void {
-            this.$log.log(msg);
             this.notify(msg);
         }
         public debug(msg: string) : void {
@@ -70,6 +94,7 @@ module myApp {
         }
         
         private notify(msg: string, type?: string) {
+            // this.$log[type || 'log'](msg);
             this.notifiers.forEach(notifier => {
                notifier.notify(msg, type); 
             });
@@ -80,9 +105,32 @@ module myApp {
     
     /* notifiers */
     
+    /**
+     * A simple notifier that prints to the console
+     */
     export class ConsoleNotifier implements INotifier {
         public notify(msg: string, type?: string) {
-            console.log(msg);
+            switch(type) {
+                case 'info': {
+                    console.info(msg);
+                    break;    
+                }
+                case 'warn': {
+                    console.warn(msg);
+                    break;    
+                }
+                case 'debug': {
+                    console.debug(msg);
+                    break;    
+                }
+                case 'error': {
+                    console.error(msg);
+                    break;    
+                }
+                default: {
+                    console.log(msg);
+                }
+            }
         }
     }
 }
