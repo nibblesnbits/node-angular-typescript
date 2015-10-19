@@ -16,7 +16,7 @@ var tests;
             spyOn(dataService, "getData").and
                 .returnValue(new $q(function (resolve) { return resolve(mocks.generateRandomObjects()); }));
             createController = function () {
-                return $controller(myApp.DataService.InjectionName, { dataService: dataService });
+                return $controller(myApp.dataServiceId, { dataService: dataService });
             };
         }));
         describe('on creation', function () {

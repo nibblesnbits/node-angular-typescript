@@ -25,7 +25,7 @@ module tests {
                 .returnValue(new $q(resolve => resolve(mocks.generateRandomObjects())));
             
             createController = () => {
-                return $controller(myApp.DataService.InjectionName, { dataService: dataService });
+                return $controller(myApp.dataServiceId, { dataService: dataService });
             }
         }));
         

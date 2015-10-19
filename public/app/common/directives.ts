@@ -30,46 +30,54 @@
 
 module myApp {
 	
-	class MyDirective implements angular.IDirective {
-        public static get DirectiveName(): string { return 'myDirective'; };
-		public restrict = 'AE';
-		public template = "<p>I'm a directive!</p>";
+	export interface IAddClassDirectiveScope extends angular.IScope {
+		list: string;
+	}
+	class AddClassDirective implements angular.IDirective {
+        public static get DirectiveName(): string { return 'addClass'; };
+		public restrict = 'A';
 		
-		constructor() { }
+		public scope = {
+			list: '@'	
+		};
 		
-		public link: angular.IDirectiveLinkFn = (scope: angular.IScope, element: angular.IAugmentedJQuery, attrs: angular.IAttributes) => {
-			element.addClass('someClass');
+		public link: angular.IDirectiveLinkFn = (scope: IAddClassDirectiveScope, element: angular.IAugmentedJQuery, attrs: angular.IAttributes) => {
+			element.addClass(scope.list);
 		}
 		
 		static factory() {
 			var directive = () => {
-				return new MyDirective();
+				return new AddClassDirective();
 			};
 			directive.$inject = [];
 			return directive;
 		}
 	}
-	angular.module(commonModuleId).directive(MyDirective.DirectiveName, MyDirective.factory());
+	angular.module(commonModuleId).directive(AddClassDirective.DirectiveName, AddClassDirective.factory());
 	
 	export interface IMyComplexDirectiveScope extends angular.IScope {
 		options: {
 			message: string
-		}
+		},
+		data: any
 	}
 	
 	class MyComplexDirective implements angular.IDirective {
         public static get DirectiveName(): string { return 'myComplexDirective'; };
-		public restrict = 'A';
+		public restrict = 'E';
 		public templateUrl = "app/templates/myComplexDirective.html";
 		
 		public scope = {
-			options: '='
+			options: '=',
+			data: '='
 		};
 		
 		constructor(private dataService: IDataService) { }
 		
 		public link: angular.IDirectiveLinkFn = (scope: IMyComplexDirectiveScope, element: angular.IAugmentedJQuery, attrs: angular.IAttributes) => {
-			element.add('<p>{{options.message}}</p>');
+			this.dataService.getData().then(data => {
+                scope.data = data[0];
+			});
 		}
 		
 		static factory() {

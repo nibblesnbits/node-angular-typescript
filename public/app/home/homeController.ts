@@ -58,10 +58,6 @@ module myApp {
      * Controller for the 'Home' state.
      */
     export class HomeController {
-        /**
-         * String to pass into any dependency injection points to retrieve an instance of HomeController
-         */
-        public static get InjectionName(): string { return 'homeController'; };
         public static $inject = [dataServiceId];
         
         public data: any[];
@@ -79,5 +75,5 @@ module myApp {
         }
     }
 
-    angular.module(homeModuleId).controller(HomeController.InjectionName, HomeController);
+    angular.module(homeModuleId).controller(homeControllerId, HomeController);
 }

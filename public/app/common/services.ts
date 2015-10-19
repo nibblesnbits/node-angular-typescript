@@ -27,7 +27,7 @@ module myApp {
     /**
      * A key/value store for storing arbitrary data 
      */
-    interface IStorageContainer {
+    export interface IStorageContainer {
         
         /**
          * Sets a value in the storage container at the specified key
@@ -45,7 +45,7 @@ module myApp {
         get(key: string): string;     
     }
     
-    class LocalStorageContainer implements IStorageContainer {
+    export class LocalStorageContainer implements IStorageContainer {
         public set(key: string, data: any): void {
             localStorage.setItem(key,data);
         }
@@ -54,7 +54,7 @@ module myApp {
         }
     }
     
-    class CookieStorageContainer implements IStorageContainer {
+    export class CookieStorageContainer implements IStorageContainer {
         
         private cookieDateFormat = 'ddd, MMM YYYY hh:mm:ss';
         private expirationSpan = 10;
@@ -100,16 +100,14 @@ module myApp {
         getItem(key: string): string;        
     }
     
-    interface StorageServiceFactory {
+    export interface IStorageServiceFactory {
         (storageMethod: IStorageContainer): IStorageService
     }
 
     class StorageService implements IStorageService {
         public static $inject = [];
 
-        constructor(private store: IStorageContainer) {
-			
-        }
+        constructor(private store: IStorageContainer) { }
         
         public setItem(key: string, data: any): void {
             this.store.set(key,data);
@@ -118,7 +116,7 @@ module myApp {
             return this.store.get(key);
         }
         
-		static factory(): StorageServiceFactory {
+		static factory(): IStorageServiceFactory {
 			var factoryFn = (storageMethod: IStorageContainer) => {
 				return new StorageService(storageMethod);
 			};
@@ -137,28 +135,43 @@ module myApp {
          * The base URL for the common data service
          */
         DataApiUrl: string;
+        AuthApiUrl: string;
+        AuthClientId: string;
     }
 
     /**
      * Service for accessing application configuration via named properites
      */
     export class AppConfigService implements IAppConfigService {
-        public static $inject = [storageServiceFactoryId, '$cookies'];
+        public static $inject = [storageServiceFactoryId];
         
-        private apiUrlKey = 'config_apiUrl';
+        private dataApiUrlKey = 'config_dataApiUrl';
+        private authApiUrlKey = 'config_authApiUrl';
+        private authClientIdKey = 'config_authClentId';
         private cookieExpirationKey = 'config_cookieExpiration';
 
         private storage: IStorageService;
         
-        constructor(factory: StorageServiceFactory, $cookies) {
-			this.storage = factory(new CookieStorageContainer($cookies));
+        constructor(factory: IStorageServiceFactory) {
+			this.storage = factory(new LocalStorageContainer());
         }
         
         public set DataApiUrl(url: string) {
-            this.storage.setItem(this.apiUrlKey,url);
+            this.storage.setItem(this.dataApiUrlKey,url);
         }
         public get DataApiUrl() : string {
-            return this.storage.getItem(this.apiUrlKey);
+            return this.storage.getItem(this.dataApiUrlKey);
+        }
+        
+        public set AuthApiUrl(url: string) {
+            this.storage.setItem(this.authApiUrlKey,url);
+        }
+        public get AuthApiUrl() : string {
+            return this.storage.getItem(this.authApiUrlKey);
+        }
+        
+        public get AuthClientId() : string {
+            return this.storage.getItem(this.authClientIdKey);
         }
     }
     
