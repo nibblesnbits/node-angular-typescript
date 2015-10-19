@@ -1,5 +1,8 @@
 /// <reference path="../../../typings/tsd.d.ts" />
 /// <reference path="../declarations.ts" />
+/// <reference path="../common/authorization.ts" />
+/// <reference path="../common/logging.ts" />
+
 
 
 module myApp {
@@ -21,9 +24,6 @@ module myApp {
     ShellStateConfiguration.$inject = ['$stateProvider'];
 
     class ShellController {
-        
-        public static $inject = [];
-        
-        constructor() { }
+        // nothing needed...yet.
     }
 }

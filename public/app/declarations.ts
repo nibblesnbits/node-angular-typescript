@@ -28,9 +28,11 @@ module myApp {
     export const homeControllerId = 'homeController';
     export const homeStateName = 'app.home';
     
-    export const greetingProviderId = 'greetingProvider'
+    export const notifierServiceId = 'notifierService';
+    export const notifierProviderId = notifierServiceId + 'Provider';
 	
 	export const storageServiceFactoryId = 'storageServiceFactory';
 	export const appConfigServiceId = 'appConfigProvider';
-
+    
+    export const loggerServiceId = 'loggerService';
 }

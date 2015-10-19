@@ -30,7 +30,7 @@
       "commit": "76ed26e95e91f1c91f2d11819c44b55b617e859a"
     },
     "node/node.d.ts": {
-      "commit": "76ed26e95e91f1c91f2d11819c44b55b617e859a"
+      "commit": "af5b8275d1f2b92738b93fddabc461fc20c553a1"
     },
     "gruntjs/gruntjs.d.ts": {
       "commit": "76ed26e95e91f1c91f2d11819c44b55b617e859a"
@@ -51,9 +51,6 @@
       "commit": "76ed26e95e91f1c91f2d11819c44b55b617e859a"
     },
     "moment/moment.d.ts": {
-      "commit": "30daf61172ff7160cb191fbdca095f5b8e3f752b"
-    },
-    "moment/moment-node.d.ts": {
       "commit": "30daf61172ff7160cb191fbdca095f5b8e3f752b"
     },
     "angularjs/angular-cookies.d.ts": {

@@ -2,6 +2,7 @@
 /// <reference path="../declarations.ts" />
 /// <reference path="../data/dataservice.ts" />
 /// <reference path="../common/services.ts" />
+/// <reference path="../common/logging.ts" />
 
 /*
     --- Angular.js Controllers and ui-router in TypeScript ---
@@ -58,12 +59,13 @@ module myApp {
      * Controller for the 'Home' state.
      */
     export class HomeController {
-        public static $inject = [dataServiceId];
+        public static $inject = [dataServiceId, loggerServiceId];
         
         public data: any[];
         
         constructor(
-            private dataService: myApp.IDataService) {
+            private dataService: myApp.IDataService,
+            private logger: ILogger) {
             
             this.activate();
         }
@@ -71,6 +73,7 @@ module myApp {
         private activate() {
             this.dataService.getData().then(data => {
                 this.data = data;
+                this.logger.debug('home state data loaded.');
             });
         }
     }

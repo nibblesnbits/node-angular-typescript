@@ -120,7 +120,6 @@ module myApp {
 			var factoryFn = (storageMethod: IStorageContainer) => {
 				return new StorageService(storageMethod);
 			};
-			factoryFn.$inject = [];
 			return factoryFn;
 		}
     }
@@ -172,6 +171,9 @@ module myApp {
         
         public get AuthClientId() : string {
             return this.storage.getItem(this.authClientIdKey);
+        }
+        public set AuthClientId(clientId: string) {
+            this.storage.setItem(this.authClientIdKey, clientId);
         }
     }
     
