@@ -11,31 +11,40 @@ module myApp {
         homeModuleId,
         dataModuleId,
         commonModuleId,
-        authModuleId,
         'ui.router',
         'ngCookies'
     ])
     .config(LoggerConfiguration)
+    .config(ExceptionHandlerConfiguration)
     .config(ApplicationConfiguration)
     .run(Run);
 
-    function ApplicationConfiguration($urlRouterProvider: angular.ui.IUrlRouterProvider) {
+    function ApplicationConfiguration($urlRouterProvider: angular.ui.IUrlRouterProvider, appConfig: AppConfigService ) {
         $urlRouterProvider.otherwise('/home');
+        
+        appConfig.DataApiUrl = "/api";
+        appConfig.AuthApiUrl = "/auth";
+        appConfig.AuthClientId = "node-angular-typescript";
     }
-    ApplicationConfiguration.$inject = ['$urlRouterProvider'];
+    ApplicationConfiguration.$inject = ['$urlRouterProvider', appConfigProviderId];
 
     function LoggerConfiguration(provider: NotifierService, $logProvider: angular.ILogProvider,  $provide: angular.auto.IProvideService) {
         $logProvider.debugEnabled(true);
         provider.setNotifiers(new ConsoleNotifier());
     }
     LoggerConfiguration.$inject = [notifierProviderId, '$logProvider', '$provide'];
+    
+    function ExceptionHandlerConfiguration($provide: angular.auto.IProvideService) {
+        $provide.decorator('$exceptionHandler',['$delegate', loggerServiceId,  ($delegate: angular.IExceptionHandlerService, logger: ILogger) => {
+            return (exception: Error, cause) => {
+                $delegate(exception, cause);
+                logger.error(exception.message);
+            }
+        }]);
+    }
+    ExceptionHandlerConfiguration.$inject = ['$provide'];
 
-    function Run($rootScope: angular.IRootScopeService, $state: angular.ui.IStateService, $stateParams: angular.ui.IStateParamsService, appConfig: IAppConfigService) {
-        
-        // set configuration values
-        appConfig.DataApiUrl = "/api";
-        appConfig.AuthApiUrl = "/auth";
-        appConfig.AuthClientId = "node-angular-typescript";
+    function Run($rootScope: angular.IRootScopeService, $state: angular.ui.IStateService, $stateParams: angular.ui.IStateParamsService) {
         
         $rootScope["$state"] = $state;
         $rootScope["$stateParams"] = $stateParams;
@@ -47,5 +56,5 @@ module myApp {
             }
         });
     }
-    Run.$inject = ['$rootScope', '$state', '$stateParams', appConfigServiceId]; 
+    Run.$inject = ['$rootScope', '$state', '$stateParams']; 
 }

@@ -134,7 +134,13 @@ module myApp {
          * The base URL for the common data service
          */
         DataApiUrl: string;
+        /**
+         * The base URL for accessing authorization API calls
+         */
         AuthApiUrl: string;
+        /**
+         * The ClientId used for OAuth authorization
+         */
         AuthClientId: string;
     }
 
@@ -169,12 +175,25 @@ module myApp {
             return this.storage.getItem(this.authApiUrlKey);
         }
         
-        public get AuthClientId() : string {
-            return this.storage.getItem(this.authClientIdKey);
-        }
         public set AuthClientId(clientId: string) {
             this.storage.setItem(this.authClientIdKey, clientId);
         }
+        public get AuthClientId() : string {
+            return this.storage.getItem(this.authClientIdKey);
+        }
+        
+        public $get() : IAppConfigService  {
+			return {
+				AuthClientId:
+                    this.AuthClientId
+                ,
+				AuthApiUrl:
+                    this.AuthApiUrl
+                ,
+				DataApiUrl:
+                    this.DataApiUrl
+            };
+		}
     }
     
     angular.module(commonModuleId).service(appConfigServiceId, AppConfigService);
