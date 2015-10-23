@@ -55,7 +55,7 @@ module myApp {
 			var timeoutId;
 			
 			var updateTime = (elem: angular.IAugmentedJQuery) => {
-				element.text(this.momentFilter(new Date(), scope.format));
+				element.text(this.momentFilter(moment(), scope.format));
 			}
 			
 			element.on('$destroy', () => {

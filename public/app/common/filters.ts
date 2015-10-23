@@ -4,14 +4,14 @@
 module myApp {
 	
 	export interface IMomentFilter {
-		(input: Date|string, format?: string): string;
+		(input: moment.Moment|string, format?: string): string;
 	}
 	
 	export class MomentFilter {
         public static get DefaultFormat(): string { return 'YYYY-MM-DD hh:mm:ss a'; };
 		
 		public factory(): IMomentFilter {
-			return (input: Date|string, format?: string) => {
+			return (input: moment.Moment|string, format?: string) => {
 				var date = moment(input || '');
 	
 				if (date.isValid()){

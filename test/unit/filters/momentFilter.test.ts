@@ -5,7 +5,7 @@ module tests {
     describe('MomentFilter', function () {
 
         var filter : myApp.IMomentFilter,
-            date: Date;
+            date: moment.Moment;
 		
         // note that we use only the 'common' module here
         beforeEach(angular.mock.module(myApp.commonModuleId));
@@ -14,7 +14,7 @@ module tests {
             var $filter: angular.IFilterService = $injector.get('$filter');
             
 			filter = <myApp.IMomentFilter>$filter(myApp.momentFilterId);
-            date = new Date();
+            date = moment();
         }));
         
         describe('on default call', () => {
@@ -30,11 +30,11 @@ module tests {
                 expect(result.indexOf('Error')).toBeGreaterThan(-1);
             });
         });
-        describe('when fed a custom date', () => {
+        describe('when fed a custom format', () => {
 			it('returns date in that format', () => {
                 
                 var format = 'YYYY';
-                var year = date.getFullYear().toString()
+                var year = date.year().toString()
                 expect(filter(date, format)).toBe(year);
             });
         });
