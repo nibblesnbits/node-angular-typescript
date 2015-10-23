@@ -105,8 +105,7 @@ module myApp {
     }
 
     class StorageService implements IStorageService {
-        public static $inject = [];
-
+        
         constructor(private store: IStorageContainer) { }
         
         public setItem(key: string, data: any): void {
@@ -130,6 +129,23 @@ module myApp {
      * Service for accessing application configuration via named properites
      */
     export interface IAppConfigService {
+        /**
+         * The base URL for the common data service
+         */
+        DataApiUrl: string;
+        /**
+         * The base URL for accessing authorization API calls
+         */
+        AuthApiUrl: string;
+        /**
+         * The ClientId used for OAuth authorization
+         */
+        AuthClientId: string;
+    }
+    /**
+     * Service for accessing application configuration via named properites
+     */
+    export interface IAppConfigServiceProvider {
         /**
          * The base URL for the common data service
          */
@@ -182,19 +198,15 @@ module myApp {
             return this.storage.getItem(this.authClientIdKey);
         }
         
-        public $get() : IAppConfigService  {
-			return {
-				AuthClientId:
-                    this.AuthClientId
-                ,
-				AuthApiUrl:
-                    this.AuthApiUrl
-                ,
-				DataApiUrl:
-                    this.DataApiUrl
+        static getProvider() : angular.IServiceProviderFactory {
+            return () => {
+                return {
+                    $get: [storageServiceFactoryId, (factory) => new AppConfigService(factory)]
+                };
             };
-		}
+        }
     }
     
     angular.module(commonModuleId).service(appConfigServiceId, AppConfigService);
+    angular.module(commonModuleId).provider(appConfigProviderId, AppConfigService.getProvider());
 }
