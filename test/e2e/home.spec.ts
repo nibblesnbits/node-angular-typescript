@@ -1,3 +1,5 @@
+/// <reference path="../../typings/tsd.d.ts" />
+
 var httpBackendMock = function() {
     angular.module('mockBackend', ['ngMockE2E'])
     .value('configData', arguments[0])
