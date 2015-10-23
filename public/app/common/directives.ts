@@ -1,6 +1,7 @@
 /// <reference path="../../../typings/tsd.d.ts" />
 /// <reference path="../declarations.ts" />
 /// <reference path="../data/dataService.ts" />
+/// <reference path="../common/filters.ts" />
 
 /*
 	--- Angular.js Diretives in TypeScript ---
@@ -30,42 +31,63 @@
 
 module myApp {
 	
-	export interface IAddClassDirectiveScope extends angular.IScope {
-		list: string;
+	export interface ICurrentTimeDirectiveScope extends angular.IScope {
+		format: string;
 	}
-	class AddClassDirective implements angular.IDirective {
-        public static get DirectiveName(): string { return 'addClass'; };
-		public restrict = 'A';
-		
+	
+	class CurrentTimeDirective implements angular.IDirective {
+        public static get DirectiveName(): string { return 'currentTime'; };
+		public restrict = 'E';
 		public scope = {
-			list: '@'	
+			format: '@'
 		};
 		
-		public link: angular.IDirectiveLinkFn = (scope: IAddClassDirectiveScope, element: angular.IAugmentedJQuery, attrs: angular.IAttributes) => {
-			element.addClass(scope.list);
+		private momentFilter: IMomentFilter;
+		
+		constructor(
+			private $interval: angular.IIntervalService,
+			$filter: angular.IFilterService) {
+				
+				this.momentFilter = <IMomentFilter>$filter(momentFilterId);
+			}
+		
+		public link: angular.IDirectiveLinkFn = (scope: ICurrentTimeDirectiveScope, element: angular.IAugmentedJQuery, attrs: angular.IAttributes) => {
+			var timeoutId;
+			
+			var updateTime = (elem: angular.IAugmentedJQuery) => {
+				element.text(this.momentFilter(new Date(), scope.format));
+			}
+			
+			element.on('$destroy', () => {
+				this.$interval.cancel(timeoutId);
+			});
+			
+			timeoutId = this.$interval(() => {
+				updateTime(element);
+			}, 1000);
 		}
 		
 		static factory() {
-			var directive = () => {
-				return new AddClassDirective();
+			var directive = ($interval, momentFilter) => {
+				return new CurrentTimeDirective($interval, momentFilter);
 			};
-			directive.$inject = [];
+			directive.$inject = ['$interval', '$filter'];
 			return directive;
 		}
 	}
-	angular.module(commonModuleId).directive(AddClassDirective.DirectiveName, AddClassDirective.factory());
+	angular.module(commonModuleId).directive(CurrentTimeDirective.DirectiveName, CurrentTimeDirective.factory());
 	
-	export interface IMyComplexDirectiveScope extends angular.IScope {
+	export interface IMyTemplateDirectiveScope extends angular.IScope {
 		options: {
 			message: string
 		},
 		data: any
 	}
 	
-	class MyComplexDirective implements angular.IDirective {
-        public static get DirectiveName(): string { return 'myComplexDirective'; };
+	class MyTemplateDirective implements angular.IDirective {
+        public static get DirectiveName(): string { return 'myTemplateDirective'; };
 		public restrict = 'E';
-		public templateUrl = "app/templates/myComplexDirective.html";
+		public templateUrl = "app/templates/myTemplateDirective.html";
 		
 		public scope = {
 			options: '=',
@@ -74,7 +96,7 @@ module myApp {
 		
 		constructor(private dataService: IDataService) { }
 		
-		public link: angular.IDirectiveLinkFn = (scope: IMyComplexDirectiveScope, element: angular.IAugmentedJQuery, attrs: angular.IAttributes) => {
+		public link: angular.IDirectiveLinkFn = (scope: IMyTemplateDirectiveScope, element: angular.IAugmentedJQuery, attrs: angular.IAttributes) => {
 			this.dataService.getData().then(data => {
                 scope.data = data[0];
 			});
@@ -82,11 +104,11 @@ module myApp {
 		
 		static factory() {
 			var directive = (dataService) => {
-				return new MyComplexDirective(dataService);
+				return new MyTemplateDirective(dataService);
 			};
 			directive.$inject = [dataServiceId];
 			return directive;
 		}
 	}
-	angular.module(commonModuleId).directive(MyComplexDirective.DirectiveName, MyComplexDirective.factory());
+	angular.module(commonModuleId).directive(MyTemplateDirective.DirectiveName, MyTemplateDirective.factory());
 }

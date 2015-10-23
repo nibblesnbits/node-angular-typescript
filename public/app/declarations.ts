@@ -36,4 +36,6 @@ module myApp {
     export const appConfigProviderId = appConfigServiceId + 'Provider';
     
     export const loggerServiceId = 'loggerService';
+    
+    export const momentFilterId = 'momentFilter';
 }

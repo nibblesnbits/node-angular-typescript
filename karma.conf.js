@@ -33,6 +33,8 @@ module.exports = function(config) {
             
             "public/app/common/common.js",
             "public/app/common/directives.js",
+            "public/app/common/filters.js",
+            "public/app/common/logging.js",
             "public/app/common/services.js",
             
             "public/app/data/dataService.js",

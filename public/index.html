@@ -13,12 +13,13 @@
     <link href="bower/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="bower/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" />
     <link href="bower/angular/angular-csp.css" rel="stylesheet" />
+	<link href="assets/css/styles.css" rel="stylesheet" />
 </head>
 <body ng-app="app">
-    <div>
-        <div ui-view></div>
-    </div>
+	
+	<div ui-view></div>
     
+	<script src="bower/angular-mocks/angular-mocks.js"></script>
 	<script src="bower/jquery/dist/jquery.min.js"></script>
 	<script src="bower/angular/angular.js"></script>
 	<script src="bower/angular-cookies/angular-cookies.js"></script>
@@ -29,6 +30,7 @@
 	
 	<script src="app/common/common.js"></script>
 	<script src="app/common/logging.js"></script>
+	<script src="app/common/filters.js"></script>
 	<script src="app/common/directives.js"></script>
 	<script src="app/common/services.js"></script>
     

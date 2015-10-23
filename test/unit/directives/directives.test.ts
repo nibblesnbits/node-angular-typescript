@@ -1,29 +1,42 @@
 /// <reference path="../../../typings/tsd.d.ts" />
 /// <reference path="../../../public/app/common/directives.ts" />
+/// <reference path="../mocks.ts" />
+
 
 
 module tests {
     describe('MyComplexDirective', function () {
 
         var 
-            scope: angular.IRootScopeService,
+            dataService: myApp.IDataService,
+            scope: angular.IScope,
             createDirective: () => angular.IAugmentedJQuery;
 
         // note that we use only the 'common' module here
         beforeEach(angular.mock.module(myApp.commonModuleId));
+        beforeEach(angular.mock.module(myApp.dataModuleId));
         beforeEach(angular.mock.module('templates'));
 
         beforeEach(angular.mock.inject(($injector) => {
             var $compile: angular.ICompileService = $injector.get('$compile');
             
-            scope = $injector.get('$rootScope');
+            var $q: angular.IQService = $injector.get("$q");
+            var $controller: angular.IControllerService = $injector.get('$controller');
+            var mocks = new Mocks(new Chance());
+            
+            dataService = $injector.get(myApp.dataServiceId);
+            
+            spyOn(dataService, "getData").and
+                .returnValue(new $q(resolve => resolve(mocks.generateRandomObjects())));
+                
+            scope = $injector.get('$rootScope').$new();
             
 			scope['options'] = {
                 message: 'hello'
             };
             
             createDirective = () => {
-                return $compile('<my-complex-directive options="options"></my-complex-directive>')(scope);
+                return $compile('<my-template-directive options="options"></my-template-directive>')(scope);
             };
         }));
         
@@ -39,6 +52,10 @@ module tests {
                 expect(sut.hasClass('ng-isolate-scope')).toBe(true);
             });
             
+            it('creates an element with isolated scope', () => {
+                expect(dataService.getData).toHaveBeenCalled();
+            });
+            
             it('<span> element contains message', () => {
                 var contents = sut.contents();
                 
@@ -47,10 +64,11 @@ module tests {
         });
     });
 	
-	describe('MyDirective', function () {
+	describe('CurrentTimeDirective', function () {
 
         var 
-            scope: angular.IRootScopeService,
+            scope: angular.IScope,
+            $interval: angular.IIntervalService,
             createDirective: () => angular.IAugmentedJQuery;
 
         // note that we use only the 'common' module here
@@ -59,10 +77,11 @@ module tests {
         beforeEach(angular.mock.inject(($injector) => {
             var $compile: angular.ICompileService = $injector.get('$compile');
             
-            scope = $injector.get('$rootScope');
+            scope = $injector.get('$rootScope').$new();
+            $interval = $injector.get('$interval');
             
             createDirective = () => {
-                return $compile('<my-directive></my-directive>')(scope);
+                return $compile('<current-time></current-time>')(scope);
             };
         }));
         
@@ -74,9 +93,9 @@ module tests {
                 scope.$digest();
             });
             
-            it('appends the "someClass" class', () => {
-                
-                expect(sut.hasClass('someClass')).toBe(true);
+            it('shows a time', () => {
+                $interval.flush(1000);
+                expect(sut.text()).toBeDefined();
             });
         });
     });

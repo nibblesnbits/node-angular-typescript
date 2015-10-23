@@ -1,0 +1,15 @@
+body {
+  padding: 30px;
+}
+header {
+  position: static;
+  height: 30px;
+}
+#content {
+  padding-top: 1em;
+}
+#timeContainer {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
