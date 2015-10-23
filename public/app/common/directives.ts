@@ -94,19 +94,17 @@ module myApp {
 			data: '='
 		};
 		
-		constructor(private dataService: IDataService) { }
+		constructor() { }
 		
 		public link: angular.IDirectiveLinkFn = (scope: IMyTemplateDirectiveScope, element: angular.IAugmentedJQuery, attrs: angular.IAttributes) => {
-			this.dataService.getData().then(data => {
-                scope.data = data[0];
-			});
+			element.addClass('templated');
 		}
 		
 		static factory() {
-			var directive = (dataService) => {
-				return new MyTemplateDirective(dataService);
+			var directive = () => {
+				return new MyTemplateDirective();
 			};
-			directive.$inject = [dataServiceId];
+			directive.$inject = [];
 			return directive;
 		}
 	}

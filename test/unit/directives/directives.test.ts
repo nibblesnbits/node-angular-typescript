@@ -8,7 +8,6 @@ module tests {
     describe('MyComplexDirective', function () {
 
         var 
-            dataService: myApp.IDataService,
             scope: angular.IScope,
             createDirective: () => angular.IAugmentedJQuery;
 
@@ -22,12 +21,6 @@ module tests {
             
             var $q: angular.IQService = $injector.get("$q");
             var $controller: angular.IControllerService = $injector.get('$controller');
-            var mocks = new Mocks(new Chance());
-            
-            dataService = $injector.get(myApp.dataServiceId);
-            
-            spyOn(dataService, "getData").and
-                .returnValue(new $q(resolve => resolve(mocks.generateRandomObjects())));
                 
             scope = $injector.get('$rootScope').$new();
             
@@ -51,11 +44,7 @@ module tests {
             it('creates an element with isolated scope', () => {
                 expect(sut.hasClass('ng-isolate-scope')).toBe(true);
             });
-            
-            it('creates an element with isolated scope', () => {
-                expect(dataService.getData).toHaveBeenCalled();
-            });
-            
+                        
             it('<span> element contains message', () => {
                 var contents = sut.contents();
                 

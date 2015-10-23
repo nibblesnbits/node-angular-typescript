@@ -4,7 +4,7 @@
 var tests;
 (function (tests) {
     describe('MyComplexDirective', function () {
-        var dataService, scope, createDirective;
+        var scope, createDirective;
         beforeEach(angular.mock.module(myApp.commonModuleId));
         beforeEach(angular.mock.module(myApp.dataModuleId));
         beforeEach(angular.mock.module('templates'));
@@ -12,10 +12,6 @@ var tests;
             var $compile = $injector.get('$compile');
             var $q = $injector.get("$q");
             var $controller = $injector.get('$controller');
-            var mocks = new tests.Mocks(new Chance());
-            dataService = $injector.get(myApp.dataServiceId);
-            spyOn(dataService, "getData").and
-                .returnValue(new $q(function (resolve) { return resolve(mocks.generateRandomObjects()); }));
             scope = $injector.get('$rootScope').$new();
             scope['options'] = {
                 message: 'hello'
@@ -32,9 +28,6 @@ var tests;
             });
             it('creates an element with isolated scope', function () {
                 expect(sut.hasClass('ng-isolate-scope')).toBe(true);
-            });
-            it('creates an element with isolated scope', function () {
-                expect(dataService.getData).toHaveBeenCalled();
             });
             it('<span> element contains message', function () {
                 var contents = sut.contents();
