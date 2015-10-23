@@ -1,6 +1,7 @@
 /// <reference path="../../../typings/tsd.d.ts" />
 /// <reference path="../declarations.ts" />
 /// <reference path="../common/services.ts" />
+/// <reference path="../common/logging.ts" />
 
 /*
 
@@ -30,18 +31,20 @@ module myApp {
     }
 
     export class DataService implements IDataService {
-        public static $inject = ['$http', appConfigServiceId];
+        public static $inject = ['$http', appConfigServiceId, loggerServiceId];
 
         private baseUrl: string;
 
         constructor(
             private $http: angular.IHttpService, 
-            private appConfig: IAppConfigService) {
+            private appConfig: IAppConfigService,
+            private logger: ILogger) {
 			
             this.baseUrl = appConfig.DataApiUrl;
         }
 
         public getData(): angular.IPromise<any[]> {
+            this.logger.log('making call to ' + this.baseUrl + "/data");
             return this.$http.get(this.baseUrl + "/data").then((resp: angular.IHttpPromiseCallbackArg<any[]>) => {
                 return resp.data;
             });
