@@ -1,13 +1,12 @@
 /// <reference path="../../../typings/tsd.d.ts" />
-/// <reference path="../../../public/app/common/directives.ts" />
 /// <reference path="../../../public/app/data/dataService.ts" />
 /// <reference path="../../../public/app/home/homeController.ts" />
 /// <reference path="../mocks.ts" />
 var tests;
 (function (tests) {
-    describe('HomeController', function () {
+    describe(myApp.homeControllerId, function () {
         var dataService, createController;
-        beforeEach(angular.mock.module(myApp.homeModuleId, myApp.dataModuleId, myApp.commonModuleId));
+        beforeEach(angular.mock.module(myApp.appModuleId));
         beforeEach(angular.mock.inject(function ($injector) {
             var $q = $injector.get("$q");
             var $controller = $injector.get('$controller');
@@ -21,7 +20,7 @@ var tests;
             };
         }));
         describe('on creation', function () {
-            it('calls getData', function () {
+            it('calls getTables', function () {
                 createController();
                 expect(dataService.getData).toHaveBeenCalled();
             });

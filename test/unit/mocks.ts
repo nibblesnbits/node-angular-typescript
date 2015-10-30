@@ -25,7 +25,7 @@ module tests {
         }
         
         public generateRandomStrings(count: number): string[] {
-            return Array.apply(null, Array(count)).map(function () { return this.chance.string(); });
+            return Array.apply(null, Array(count)).map(() => this.chance.string({ length: 32, pool: this.letterPool }));
         }
     }
 }

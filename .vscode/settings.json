@@ -3,7 +3,7 @@
         "**/.git": true,
         "**/.DS_Store": true,
 		"public/app/**/*.js*": true,
-		"test/unit/**/*.js*": true,
+		"test/**/*.js*": true,
 		"node_modules": true,
 		"LICENSE": true
     }

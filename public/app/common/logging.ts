@@ -21,37 +21,87 @@
 
 module myApp {
     
-    export interface INotifierService {
+    /**
+     * Defines a set of functions for displaying notifications
+     */
+    export interface INotifier {
+        /** Send a notification message */
+        notify(msg: string, type?: string, prefix?: string): void;
+    }
+
+    /**
+     * Provider for setting notifiers
+     */
+    export interface INotifierProvider extends angular.IServiceProvider {
+        /**
+         * Sets the notifiers used by the Logging service
+         * @param notifiers One or more INotifier intances
+         */
+        setNotifiers(...notifiers: INotifier[]): void;
         /**
          * Returns the list of registered notifiers
          */
         getNotifiers(): INotifier[];
-	}
+    }
+
+    /**
+     * Service for accessing notifiers
+     */
+    export interface INotifierService {
+        /**
+         * Sets the notifiers used by the Logging service
+         * @param notifiers One or more INotifier intances
+         */
+        setNotifiers(...notifiers: INotifier[]): void;
+        /**
+         * Returns the list of registered notifiers
+         */
+        getNotifiers(): INotifier[];
+    }
 	
-	export class NotifierService implements angular.IServiceProvider {
+	export class NotifierProvider implements INotifierProvider {
     
-        private notifiers: INotifier[];    
+        private notifiers: INotifier[];  
 	
 		// Configuration function
 		public setNotifiers(...notifiers: INotifier[]) {
 			this.notifiers = notifiers;
-		}
-        
-		// Provider's factory function
+        }
+
+        public getNotifiers(): INotifier[] {
+            return this.notifiers;
+        }
+
+		// Provider's factory function (produces a SERVICE)
 		public $get() : INotifierService {
 			return {
-				getNotifiers: () => { return this.notifiers; }
+                getNotifiers: () => { return this.notifiers },
+                setNotifiers: (...notifiers: INotifier[]) => { return this.setNotifiers; }
 			};
 		}
 	}
 	
-	angular.module(commonModuleId).provider(notifierServiceId, NotifierService);
+    angular.module(commonModuleId).provider(notifierServiceId, NotifierProvider);
     
+    /**
+     * Enumeration defining log levels
+     */
+    export enum LogLevel {
+        trace = 0,
+        debug = 1,
+        info = 2,
+        warn = 3,
+        error = 4
+    };
+    
+    /**
+     * Defines a set of logging functions
+     */
     export interface ILogger {
-        /** Log a debug message */
-        debug(msg: string): void;
         /** Log a generic message */
         log(msg: string): void;
+        /** Log a debug message */
+        debug(msg: string): void;
         /** Log an information message */
         info(msg: string): void;
         /** Log a warning message */
@@ -59,78 +109,98 @@ module myApp {
         /** Log an error message */
         error(msg: string): void;
     }
-    
-    export interface INotifier {
-        /** Send a notification message */
-        notify(msg: string, type?: string): void;
+
+
+    export interface ILoggerProvider extends angular.IServiceProvider {
+        setLogLevel(level: LogLevel): void;
     }
-    
-    export class LoggerService implements ILogger {
-        public static $inject = [notifierServiceId, '$log'];
+
+    export interface ILoggerService {
+        getLogger(moduleId): ILogger;
+    }
+
+    export class LoggerProvider implements ILoggerProvider {
+        public static $inject = [notifierProviderId];
         
         private notifiers: INotifier[];
+        private logLevel = LogLevel.trace;
 
         constructor(
-            notifierService: INotifierService,
-            private $log: angular.ILogService) {
-            
-            this.notifiers = notifierService.getNotifiers();
+            private notifierService: INotifierProvider) {
+
+        }
+
+        public setLogLevel(level: LogLevel): void {
+            this.logLevel = level;
         }
         
-        public log(msg: string) :void {
-            this.notify(msg);
-        }
-        public debug(msg: string) : void {
-            this.notify(msg);
-        }
-        public info(msg: string) : void  {
-            this.notify(msg, 'info');
-        }
-        public warn(msg: string) : void  {
-            this.notify(msg, 'warn');
-        }
-        public error(msg: string) : void  {
-            this.notify(msg, 'error');
+        public getLogger(moduleId): ILogger {
+            var prefix = "[" + moduleId + "]: ";
+            return {
+                log: (msg: string) => this.notify(msg, LogLevel.trace, undefined, prefix),
+                debug: (msg: string) => this.notify(msg, LogLevel.debug, 'debug', prefix),
+                info: (msg: string) => this.notify(msg, LogLevel.info, 'info', prefix),
+                warn: (msg: string) => this.notify(msg, LogLevel.warn, 'warn', prefix),
+                error: (msg: string) => this.notify(msg, LogLevel.error, 'error', prefix)
+            };
         }
         
-        private notify(msg: string, type?: string) {
-            // this.$log[type || 'log'](msg);
-            this.notifiers.forEach(notifier => {
-               notifier.notify(msg, type); 
+        private notify(msg: string, level: LogLevel, type?: string, prefix?: string) {
+            if (this.logLevel > level) {
+                return;
+            }
+            this.notifierService.getNotifiers().forEach(notifier => {
+               notifier.notify(msg, type, prefix); 
             });
+        }
+
+        // Provider's factory function (produces a SERVICE)
+        public $get(): ILoggerService {
+            return {
+                getLogger: (moduleId) => { return this.getLogger(moduleId); }
+            };
         }
     }
     
-    angular.module(commonModuleId).service(loggerServiceId, LoggerService);
-    
-    /* notifiers */
+    angular.module(commonModuleId).provider(loggerServiceId, LoggerProvider);
     
     /**
      * A simple notifier that prints to the console
      */
     export class ConsoleNotifier implements INotifier {
-        public notify(msg: string, type?: string) {
-            switch(type) {
-                case 'info': {
-                    console.info(msg);
-                    break;    
-                }
-                case 'warn': {
-                    console.warn(msg);
-                    break;    
-                }
-                case 'debug': {
-                    console.debug(msg);
-                    break;    
-                }
-                case 'error': {
-                    console.error(msg);
-                    break;    
-                }
-                default: {
-                    console.log(msg);
-                }
-            }
+        public notify(msg: string, type?: string, prefix?: string) {
+            console[type || 'log'](prefix + msg);
         }
     }
+
+//     /**
+//      * A notifier that sends message to a Toastr instance
+//      */
+//     export class ToastrNotifier implements INotifier {
+//         
+//         constructor(options: {}) {
+//             toastr.options = angular.extend(options, {
+//                 debug: false,
+//                 newestOnTop: false,
+//                 progressBar: false,
+//                 preventDuplicates: false,
+//                 onclick: null,
+//                 showDuration: 300,
+//                 hideDuration: 1000,
+//                 timeOut: 5000,
+//                 extendedTimeOut: 1000,
+//                 showEasing: "swing",
+//                 hideEasing: "linear",
+//                 showMethod: "fadeIn",
+//                 hideMethod: "fadeOut",
+//                 tapToDismiss: true
+//             });
+//         }
+// 
+//         public notify(msg: string, type?: string, prefix?: string) {
+//             if (!type)
+//                 return;
+//             toastr[type](msg);
+//         }
+//     }
 }

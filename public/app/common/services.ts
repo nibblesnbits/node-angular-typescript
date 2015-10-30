@@ -21,7 +21,6 @@
     the constructor of AppConfigService for an example.
     
 */
-
 module myApp {
     
     /**
@@ -104,6 +103,17 @@ module myApp {
         (storageMethod: IStorageContainer): IStorageService
     }
 
+    class AppConstStorageContainer implements IStorageContainer {
+        constructor(private obj: {}) { }
+
+        public set(key: string, data: any): void {
+            this.obj[key] = data;
+        }
+        public get(key: string): string {
+            return this.obj[key];
+        }
+    }
+
     class StorageService implements IStorageService {
         
         constructor(private store: IStorageContainer) { }
@@ -114,16 +124,16 @@ module myApp {
         public getItem(key: string) : string {
             return this.store.get(key);
         }
-        
-		static factory(): IStorageServiceFactory {
-			var factoryFn = (storageMethod: IStorageContainer) => {
-				return new StorageService(storageMethod);
-			};
-			return factoryFn;
-		}
+
+        static serviceFactory(): IStorageServiceFactory {
+            var factoryFn = (storageMethod: IStorageContainer) => {
+                return new StorageService(storageMethod);
+            };
+            return factoryFn;
+        }
     }
-    
-    angular.module(commonModuleId).factory(storageServiceFactoryId, StorageService.factory);
+
+    angular.module(commonModuleId).factory(storageServiceFactoryId, StorageService.serviceFactory);
     
     /**
      * Service for accessing application configuration via named properites
@@ -133,14 +143,6 @@ module myApp {
          * The base URL for the common data service
          */
         DataApiUrl: string;
-        /**
-         * The base URL for accessing authorization API calls
-         */
-        AuthApiUrl: string;
-        /**
-         * The ClientId used for OAuth authorization
-         */
-        AuthClientId: string;
     }
     /**
      * Service for accessing application configuration via named properites
@@ -150,58 +152,34 @@ module myApp {
          * The base URL for the common data service
          */
         DataApiUrl: string;
-        /**
-         * The base URL for accessing authorization API calls
-         */
-        AuthApiUrl: string;
-        /**
-         * The ClientId used for OAuth authorization
-         */
-        AuthClientId: string;
     }
 
     /**
      * Service for accessing application configuration via named properites
      */
-    export class AppConfigService implements IAppConfigService {
-        public static $inject = [storageServiceFactoryId];
+    export class AppConfigService implements IAppConfigService, IAppConfigServiceProvider {
+        public static $inject = [storageServiceFactoryId, configConstKey];
         
         private dataApiUrlKey = 'config_dataApiUrl';
-        private authApiUrlKey = 'config_authApiUrl';
-        private authClientIdKey = 'config_authClentId';
-        private cookieExpirationKey = 'config_cookieExpiration';
 
         private storage: IStorageService;
         
-        constructor(factory: IStorageServiceFactory) {
-			this.storage = factory(new LocalStorageContainer());
+        constructor(factory: IStorageServiceFactory, config: {}) {
+			this.storage = factory(new AppConstStorageContainer(config));
         }
         
         public set DataApiUrl(url: string) {
             this.storage.setItem(this.dataApiUrlKey,url);
         }
+        
         public get DataApiUrl() : string {
             return this.storage.getItem(this.dataApiUrlKey);
-        }
-        
-        public set AuthApiUrl(url: string) {
-            this.storage.setItem(this.authApiUrlKey,url);
-        }
-        public get AuthApiUrl() : string {
-            return this.storage.getItem(this.authApiUrlKey);
-        }
-        
-        public set AuthClientId(clientId: string) {
-            this.storage.setItem(this.authClientIdKey, clientId);
-        }
-        public get AuthClientId() : string {
-            return this.storage.getItem(this.authClientIdKey);
         }
         
         static getProvider() : angular.IServiceProviderFactory {
             return () => {
                 return {
-                    $get: [storageServiceFactoryId, (factory) => new AppConfigService(factory)]
+                    $get: [storageServiceFactoryId, configConstKey, (factory, config) => new AppConfigService(factory, config)]
                 };
             };
         }

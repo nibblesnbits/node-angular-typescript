@@ -49,8 +49,7 @@ module myApp {
             url: 'home',
             controller: HomeController,
             controllerAs: 'vm',
-            templateUrl: 'app/home/home.html',
-            data: { pageTitle: 'Home' }
+            templateUrl: 'app/home/home.html'
         });
     }
     HomeStateConfiguration.$inject = ['$stateProvider'];
@@ -62,18 +61,20 @@ module myApp {
         public static $inject = [dataServiceId, loggerServiceId];
         
         public data: any[];
+        private logger: ILogger;
         
         constructor(
             private dataService: myApp.IDataService,
-            private logger: ILogger) {
+            loggerService: ILoggerService) {
             
+            this.logger = loggerService.getLogger(homeControllerId);
             this.activate();
+            this.logger.log('State '+homeStateName + ' loaded');
         }
 
         private activate() {
             this.dataService.getData().then(data => {
                 this.data = data;
-                this.logger.debug('home state data loaded.');
             });
         }
     }

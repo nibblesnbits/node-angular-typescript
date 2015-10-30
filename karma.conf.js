@@ -42,6 +42,7 @@ module.exports = function(config) {
             "public/app/layout/shellController.js",
             "public/app/home/homeController.js",
             
+            "public/app/config.js",
             "public/app/app.js",
             
             // templates

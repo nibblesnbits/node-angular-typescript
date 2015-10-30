@@ -30,16 +30,18 @@ module myApp {
         getData(): angular.IPromise<any[]>
     }
 
-    export class DataService implements IDataService {
+    class DataService implements IDataService {
         public static $inject = ['$http', appConfigServiceId, loggerServiceId];
 
         private baseUrl: string;
-
+        private logger: ILogger;
+        
         constructor(
             private $http: angular.IHttpService, 
             private appConfig: IAppConfigService,
-            private logger: ILogger) {
-			
+            loggerService: ILoggerService) {
+                
+			this.logger = loggerService.getLogger(dataServiceId);
             this.baseUrl = appConfig.DataApiUrl;
         }
 

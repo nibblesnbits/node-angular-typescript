@@ -1,17 +1,16 @@
 /// <reference path="../../../typings/tsd.d.ts" />
-/// <reference path="../../../public/app/common/directives.ts" />
 /// <reference path="../../../public/app/data/dataService.ts" />
 /// <reference path="../../../public/app/home/homeController.ts" />
 /// <reference path="../mocks.ts" />
 
 module tests {
-    describe('HomeController', function () {
+    describe(myApp.homeControllerId, function () {
 
         var 
             dataService: myApp.IDataService,
             createController: () => myApp.HomeController;
 
-        beforeEach(angular.mock.module(myApp.homeModuleId, myApp.dataModuleId, myApp.commonModuleId));
+        beforeEach(angular.mock.module(myApp.appModuleId));
 
         beforeEach(angular.mock.inject(($injector) => {
 
@@ -24,15 +23,15 @@ module tests {
             
             spyOn(dataService, "getData").and
                 .returnValue(new $q(resolve => resolve(mocks.generateRandomObjects())));
-            
+
             createController = () => {
                 return $controller(myApp.homeControllerId, { dataService: dataService, logger: logger });
-            }
+            };
         }));
         
         describe('on creation', () => {
             
-            it('calls getData', () => {
+            it('calls getTables', () => {
                 createController();
                 expect(dataService.getData).toHaveBeenCalled();
             });

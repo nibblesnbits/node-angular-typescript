@@ -6,8 +6,7 @@
 
 
 module myApp {
-    'use strict';
-
+    
     angular.module(appModuleId, [
         shellModuleId,
         homeModuleId,
@@ -16,23 +15,15 @@ module myApp {
         'ui.router',
         'ngCookies'
     ])
-    .config(LoggerConfiguration)
-    .config(ExceptionHandlerConfiguration)
-    .config(ApplicationConfiguration)
-    .run(Run);
+        .constant(configConstKey, {})
+        .config(LoggerConfiguration)
+        .config(RouteConfiguration)
+        .run(Run);
 
     
-    function Run($rootScope: angular.IRootScopeService, $state: angular.ui.IStateService, $stateParams: angular.ui.IStateParamsService) {
-        
-        $rootScope["$state"] = $state;
-        $rootScope["$stateParams"] = $stateParams;
-        $rootScope.$on('$stateChangeSuccess', function (event: angular.IAngularEvent, toState: angular.ui.IState) {
-            if (angular.isDefined(toState.data)) {
-                if (angular.isDefined(toState.data.pageTitle)) {
-                    $rootScope["pageTitle"] = toState.data.pageTitle + ' | Troi';
-                }
-            }
-        });
+    function Run(appConfig: IAppConfigService) {
+        // because AppConfigService relies on a factory, we have to do this in the Run step
+        appConfig.DataApiUrl = '/api'
     }
-    Run.$inject = ['$rootScope', '$state', '$stateParams']; 
+    Run.$inject = [appConfigServiceId]; 
 }

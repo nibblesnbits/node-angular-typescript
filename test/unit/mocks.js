@@ -18,7 +18,8 @@ var tests;
             return objs;
         };
         Mocks.prototype.generateRandomStrings = function (count) {
-            return Array.apply(null, Array(count)).map(function () { return this.chance.string(); });
+            var _this = this;
+            return Array.apply(null, Array(count)).map(function () { return _this.chance.string({ length: 32, pool: _this.letterPool }); });
         };
         return Mocks;
     })();
