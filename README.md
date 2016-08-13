@@ -1,6 +1,14 @@
 # node-angular-typescript
 Example implementation of a [Node.js](https://nodejs.org/en/)/[Angular.js](https://angular.io/)/[Typescript](http://www.typescriptlang.org/) application
 
+##Prerequisites
+This project requires a few tools to be installed prior to use.  Run the following commands to install the neccessary tools.
+```bash
+npm i -g bower
+npm i -g tsd
+npm i -g grunt-cli
+```
+
 ##Running this example
 To run this example, first install all the necessary dependencies and compile the Typscript files.
 ```bash
